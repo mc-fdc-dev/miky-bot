@@ -1,0 +1,2 @@
+# miky-bot
+Misskey
