@@ -14,13 +14,15 @@ else:
 
 class MikyBot(commands.Bot):
     pool: Pool | None
+    user: dict[discord.User, str] = {}
 
     async def setup_hook(self) -> None:
         self.pool = await create_pool(
             host=getenv("DB_HOST"),
             user=getenv("DB_USER"),
             password=getenv("DB_PASSWORD"),
-            db=getenv("DB_NAME")
+            db=getenv("DB_NAME"),
+            autocommit=True
         )
         await self.load_extension("cogs.auth")
         await self.load_extension("jishaku")

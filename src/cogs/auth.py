@@ -7,6 +7,8 @@ import asyncio
 
 import uuid
 
+from .utils import get_user
+
 
 class GetAccessToken(discord.ui.View):
 
@@ -37,6 +39,11 @@ class Auth(commands.Cog):
         self.bot = bot
         self.waiting_auth_users = {}
 
+    async def cog_load(self) -> None:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute("CREATE TABLE IF NOT EXISTS User (id BIGINT, host TEXT, token TEXT)")
+
     @app_commands.command(
         description="misskeyにログインするために必要なことです。"
     )
@@ -45,6 +52,11 @@ class Auth(commands.Cog):
         self, interaction: discord.Interaction,
         host: str | None = "misskey.io"
     ) -> None:
+        if await get_user(interaction.user.id, self.bot.pool):
+            return await interaction.response.send_message(
+                "既にログイン済みです。",
+                ephemeral=True
+            )
         session_id = uuid.uuid4()
         self.waiting_auth_users[interaction.user.id] = {
             "host": host,
@@ -54,7 +66,7 @@ class Auth(commands.Cog):
             embed=discord.Embed(
                 title="こちらでログインしてください。",
                 description="https://{}/miauth/{}?name=MIKY&permission=read:account,write:notes".format(host, session_id)
-            ).set_footer(name="反映まで最大五秒かかります。"),
+            ).set_footer(text="反映まで最大五秒かかります。"),
             ephemeral=True
         )
         for i in range(60):
@@ -70,6 +82,12 @@ class Auth(commands.Cog):
                             title="こちらでログインしてください。",
                             description="ログイン確認できました。"
                         ))
+                        async with self.bot.pool.acquire() as conn:
+                            async with conn.cursor() as cur:
+                                await cur.execute(
+                                    "INSERT INTO User VALUES(%s, %s);",
+                                    (interaction.user.id, host, data["token"])
+                                )
                         break
                     await asyncio.sleep(5)
 
