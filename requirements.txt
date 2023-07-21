@@ -1,4 +1,0 @@
-discord.py
-aiohttp
-fastapi
-uvicorn[standard]
