@@ -21,7 +21,7 @@ else:
 
 class MikyBot(commands.Bot):
     pool: Pool | None
-    user: dict[discord.User, str] = {}
+    logined_users: dict[discord.User, str] = {}
 
     async def setup_hook(self) -> None:
         self.pool = await create_pool(
