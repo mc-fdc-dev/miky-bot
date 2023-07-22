@@ -52,8 +52,9 @@ class Auth(commands.Cog):
         self, interaction: discord.Interaction,
         host: str | None = "misskey.io"
     ) -> None:
+        await interaction.response.defer(ephemeral=True)
         if await get_userdata(interaction.user.id, self.bot.pool):
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 "既にログイン済みです。",
                 ephemeral=True
             )
@@ -62,7 +63,7 @@ class Auth(commands.Cog):
             "host": host,
             "session_id": str(session_id),
         }
-        await interaction.response.send_message(
+        await interaction.followup.send(
             embed=discord.Embed(
                 title="こちらでログインしてください。",
                 description="https://{}/miauth/{}?name=MIKY&permission=read:account,write:notes".format(host, session_id)
