@@ -8,7 +8,7 @@ from .utils import get_userdata
 
 
 class Note(discord.ui.Modal, title="ノート"):
-    content = discord.ui.TextInput(label="内容")
+    content = discord.ui.TextInput(label="内容", style=discord.TextStyle.paragraph)
 
     def __init__(self, host: str, token: str):
         self.host = host
