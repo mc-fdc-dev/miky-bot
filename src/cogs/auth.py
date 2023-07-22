@@ -7,7 +7,7 @@ import asyncio
 
 import uuid
 
-from .utils import get_user
+from .utils import get_userdata
 
 
 class GetAccessToken(discord.ui.View):
@@ -52,7 +52,7 @@ class Auth(commands.Cog):
         self, interaction: discord.Interaction,
         host: str | None = "misskey.io"
     ) -> None:
-        if await get_user(interaction.user.id, self.bot.pool):
+        if await get_userdata(interaction.user.id, self.bot.pool):
             return await interaction.response.send_message(
                 "既にログイン済みです。",
                 ephemeral=True
@@ -85,7 +85,7 @@ class Auth(commands.Cog):
                         async with self.bot.pool.acquire() as conn:
                             async with conn.cursor() as cur:
                                 await cur.execute(
-                                    "INSERT INTO User VALUES(%s, %s);",
+                                    "INSERT INTO User VALUES(%s, %s, %s);",
                                     (interaction.user.id, host, data["token"])
                                 )
                         break

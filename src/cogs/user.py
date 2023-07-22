@@ -4,7 +4,7 @@ import discord
 
 import aiohttp
 
-from .utils import get_user
+from .utils import get_userdata
 
 
 class Note(discord.ui.Modal, title="ノート"):
@@ -20,19 +20,19 @@ class Note(discord.ui.Modal, title="ノート"):
                 pass
 
 
-class User(commands.Cog):
+class MisskeyUser(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
         self.pool = bot.pool
 
     @app_commands.command(description="ノートします")
-    async def note(self, interaction) -> None:
-        token = await get_user(interaction.user.id)
-        if token is None:
+    async def note(self, interaction):
+        data = await get_userdata(interaction.user.id)
+        if data is None:
             await interaction.response.send_message("利用するためにはログインしてください。")
         await interaction.response.send_modal()
 
 
-async def setup(bot) -> None:
-    await bot.add_cog(User(bot))
+async def setup(bot):
+    await bot.add_cog(MisskeyUser(bot))

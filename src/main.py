@@ -25,6 +25,7 @@ class MikyBot(commands.Bot):
             autocommit=True
         )
         await self.load_extension("cogs.auth")
+        await self.load_extension("cogs.user")
         await self.load_extension("jishaku")
 
 
