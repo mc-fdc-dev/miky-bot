@@ -11,6 +11,13 @@ except ImportError:
 else:
     dotenv.load_dotenv()
 
+try:
+    import uvloop
+except ImportError:
+    pass
+else:
+    uvloop.install()
+
 
 class MikyBot(commands.Bot):
     pool: Pool | None
