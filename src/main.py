@@ -27,6 +27,7 @@ class MikyBot(commands.Bot):
         await self.load_extension("cogs.auth")
         await self.load_extension("cogs.user")
         await self.load_extension("jishaku")
+        await self.tree.sync()
 
 
 bot = MikyBot(command_prefix="d!", intents=discord.Intents.all())
