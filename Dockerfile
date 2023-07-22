@@ -12,7 +12,7 @@ FROM python:3-slim
 WORKDIR /app/bot
 
 COPY --from=package /app/package/requirements.txt .
-RUN pip install -r requirement.txt
+RUN pip install -r requirements.txt
 
 COPY ./src .
 
