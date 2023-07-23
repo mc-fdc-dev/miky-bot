@@ -19,16 +19,12 @@ class Note(discord.ui.Modal, title="ノート"):
         async with aiohttp.ClientSession() as sess:
             async with sess.post(
                 f"https://{self.host}/api/notes/create",
-                json={
-                    "i": self.token,
-                    "text": self.content.value
-                }
+                json={"i": self.token, "text": self.content.value},
             ) as r:
                 await interaction.response.send_message("送信しました。")
 
 
 class MisskeyUser(commands.Cog):
-    
     def __init__(self, bot):
         self.bot = bot
         self.pool = bot.pool

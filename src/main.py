@@ -29,7 +29,7 @@ class MikyBot(commands.Bot):
             user=getenv("DB_USER"),
             password=getenv("DB_PASSWORD"),
             db=getenv("DB_NAME"),
-            autocommit=True
+            autocommit=True,
         )
         await self.load_extension("cogs.auth")
         await self.load_extension("cogs.user")
