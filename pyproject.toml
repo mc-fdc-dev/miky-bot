@@ -12,6 +12,7 @@ aiohttp = "^3.8.5"
 aiomysql = "^0.2.0"
 jishaku = "^2.5.1"
 uvloop = {version = "^0.17.0", platform = "linux"}
+cryptography = "^41.0.2"
 
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.0"
