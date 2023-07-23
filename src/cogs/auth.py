@@ -5,8 +5,8 @@ import aiohttp
 from cryptography.fernet import Fernet
 
 import asyncio
-
 import uuid
+from os import getenv
 
 from .utils import get_userdata
 
