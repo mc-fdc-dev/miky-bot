@@ -31,9 +31,9 @@ class MikyBot(commands.Bot):
             db=getenv("DB_NAME"),
             autocommit=True,
         )
+        await self.load_extension("jishaku")
         await self.load_extension("cogs.auth")
         await self.load_extension("cogs.user")
-        await self.load_extension("jishaku")
         await self.tree.sync()
 
 
